@@ -3,14 +3,16 @@ import React, { useEffect, useState } from 'react'
 import { API_KEY, API_URI,IMAGE_URI } from '../../Config'
 import MainImage from '../LandingPage/Session/MainImage';
 import GridCard from '../LandingPage/Session/GridCard';
+import Favourite from './Section/Favourite';
 
 function MovieDetailPage(props) {
     const [movie,setMovie] = useState([])
     const [crews,setCrew] = useState([])
     const [Toggle,SetToggle]= useState(false)
+    const movieId = props.match.params.movieId
 
     useEffect(()=>{
-        const movieId = props.match.params.movieId
+       
         fetch(`${API_URI}movie/${movieId}?api_key=${API_KEY}&language=en-US`)
         .then(response =>response.json())
         .then(response=>{
@@ -41,7 +43,11 @@ function MovieDetailPage(props) {
             <div style={{ width: '85%', margin: '1rem auto' }}>
 
                 <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                    <button>Add to Favourite</button>
+                   <Favourite 
+                    userFrom={localStorage.getItem('userId')}
+                    movieId={movieId}
+                    movieInfo={movie}/>
+                
                 </div>
 
                 <Descriptions title='Movie Info' bordered>
@@ -59,6 +65,7 @@ function MovieDetailPage(props) {
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
                     <Button onClick={handleClick}>Actor View</Button>
                 </div>
+                <br/>
                 {Toggle&&
                     <Row gutter={[16,16]}>
                         {crews && crews.map((crew,index)=>(
