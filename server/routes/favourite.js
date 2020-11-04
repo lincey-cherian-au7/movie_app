@@ -40,4 +40,12 @@ router.post("/removefromfavourite", auth, (req, res) => {
         res.status(200).json({success:true,doc})
     })
 });
+
+router.post("/getfavouriteMovies", auth, (req, res) => {
+    Favourite.find({"userFrom":req.body.userFrom})
+    .exec((err,doc)=>{
+        if(err) return res.status(400).send(err)
+        res.status(200).json({success:true,doc})
+    })
+});
 module.exports = router;
